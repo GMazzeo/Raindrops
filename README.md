@@ -7,5 +7,8 @@ Steps of making the game
 =====================================
 
 *Make the raindrops - DONE 
+
 *Make the catcher
+
 *If the raindrops intersect with a catcher, the score increases.
+
