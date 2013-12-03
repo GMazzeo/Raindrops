@@ -6,7 +6,6 @@ class Stopper {
     loc = new PVector(x, y);
     d= 200;
   }
-  
-  void display() {
+}
     
 
