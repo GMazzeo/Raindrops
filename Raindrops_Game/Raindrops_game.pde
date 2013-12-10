@@ -1,4 +1,4 @@
-Raindrop[]droplet = new Raindrop[50];
+Raindrop[]droplet = new Raindrop[55];
 Catcher catcher;
 int score;
 int index = 1;
@@ -52,6 +52,8 @@ void draw() {
   }
   //Level two is passed when the score is equal to 25
   if (score == 25) {
+    textMode(CENTER);
+    textSize(40);
     fill(33, 78, 252);
     text("You passed Level 2", 80, height/2);
   }
@@ -62,4 +64,5 @@ void draw() {
     fill(252, 218, 43);
     text("You win!", 115, height/2);
   }
+  //If you miss 5 raindrops, the score will never reach 50 and you will lose the game
 }
