@@ -5,10 +5,11 @@ class Raindrop {
 
   Raindrop() {
     raindrop = loadImage("Raindrop.png");
+    //The raindrops will begin at a random width, with a height above the viewing screen
     loc = new PVector(random(width), -d);
     vel = new PVector(0, 2);
     acc = new PVector(0, random(.01, .03));
-    d = 12;
+    d = 10;
   }
 
   void display() {
