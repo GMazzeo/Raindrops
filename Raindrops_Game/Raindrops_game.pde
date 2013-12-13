@@ -1,68 +1,104 @@
-Raindrop[]droplet = new Raindrop[55];
+Raindrop[]droplet = new Raindrop[500];
 Catcher catcher;
+boolean start;
+boolean stop;
 int score;
 int index = 1;
 int oldTime = 0;
 int threshold = 2000;
 PImage background;
+PImage lady;
 
 void setup() {
   //Set the background
+  background(0);
   background = loadImage("Background.jpeg");
   size(background.width, background.height);
+  lady = loadImage ("lady with umbrella.png");
   //Create conditions for when the raindrop class will be activated
   for (int i = 0; i < droplet.length; i++) {
     droplet[i] = new Raindrop();
   }
   catcher = new Catcher();
+  start = true;
 }
 
 void draw() {
-  background(background);
-  textSize(75);
-  fill(0);
-  text(score, 10, 100);
-  //Display the catcher and have it move 
-  catcher.display();
-  catcher.update();
-  //Create a timer so that one raindrop falls one at a time 
-  if (millis() - oldTime>threshold) {
-    if (index < droplet.length) {
-      index++;
-      oldTime = millis();
+  //Create start Screen
+  if (start == true && stop == false) {
+    rectMode(CENTER);
+    fill(163, 90, 242);
+    rect(width/2, height/2, 200, 70);
+    rectMode(CENTER);
+    textAlign(CENTER, CENTER);
+    textSize(60);
+    fill(255);
+    text("Start!", width/2, height/2);
+    imageMode(CENTER);
+    image(lady, 65, 245, 75, 100);
+  }
+  //Start the game
+  if (start == false && stop == false) { 
+    background(background);
+    textSize(75);
+    fill(0);
+    text(score, 50, 50);
+    //Display the catcher and have it move 
+    catcher.display();
+    catcher.update();
+    //Create a timer so that one raindrop falls one at a time 
+    if (millis() - oldTime>threshold) {
+      if (index < droplet.length) {
+        index++;
+        oldTime = millis();
+      }
     }
-  }
-  for (int i = 0; i < index; i++) {
-    droplet[i].display();
-    droplet[i].fall();
-    //Create conditions so that the score increases each time a raindrop interacts with the bucket
-    if (catcher.catchDrop(droplet[i]) == true) {
-      droplet[i].caught();
-      score++;
-      threshold-=10;
+    for (int i = 0; i < index; i++) {
+      droplet[i].display();
+      droplet[i].fall();
+      //Create conditions so that the score increases each time a raindrop interacts with the bucket
+      if (catcher.catchDrop(droplet[i]) == true) {
+        droplet[i].caught();
+        score++;
+        threshold-=10;
+      }
     }
-  }
-  //Set the standards for the game
-  //Level one is passed when the score is equal to 10
-  if (score == 10) {
-    textMode(CENTER);
-    textSize(40);
-    fill(252, 33, 33);
-    text("You passed Level 1", 80, height/2);
-  }
-  //Level two is passed when the score is equal to 25
-  if (score == 25) {
-    textMode(CENTER);
-    textSize(40);
-    fill(33, 78, 252);
-    text("You passed Level 2", 80, height/2);
+    //Set the standards for the game
+    //Level one is passed when the score is equal to 10
+    if (score == 10) {
+      textMode(CENTER);
+      textSize(40);
+      fill(252, 33, 33);
+      text("You passed Level 1", 275, height/2);
+    }
+    //Level two is passed when the score is equal to 25
+    if (score == 50) {
+      textMode(CENTER);
+      textSize(40);
+      fill(33, 78, 252);
+      text("You passed Level 2", 275, height/2);
+    }
+    if (score == 100) {
+      stop = true;
+    }
   }
   //The game is won when the score is equal to 50
-  if (score == 50) {
-    textMode(CENTER);
-    textSize(75);
+  if (stop == true) {
+    textMode(350);
+    textAlign(CENTER);
     fill(252, 218, 43);
-    text("You win!", 115, height/2);
+    text("You win!", 250, height/2);
   }
-  //If you miss 5 raindrops, the score will never reach 50 and you will lose the game
+}
+
+//To start game 
+void mousePressed() {
+  if (mouseY<height/2+35 && mouseY>height/2-35 && mouseX<width/2+100 && mouseX>width/2-100) {
+    start=false;
+  }
+}
+
+//To make raindrops fall quicker
+void mouseDragged() {
+  index+=2;
 }
