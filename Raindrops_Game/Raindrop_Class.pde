@@ -22,12 +22,16 @@ class Raindrop {
     vel.add(acc);
     loc.add(vel);
   }
-  
+
   void caught() {
     //If the raindrop falls in the bucket, it disapears from the game
     loc.set(height*2, 0);
-    vel.set(0,0);
-    acc.set(0,0);
+    vel.set(0, 0);
+    acc.set(0, 0);
+  }
+
+  void speed() {
+    vel.y+=.75;
   }
 }
 

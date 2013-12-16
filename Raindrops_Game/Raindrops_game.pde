@@ -2,10 +2,12 @@ Raindrop[]droplet = new Raindrop[500];
 Catcher catcher;
 boolean start;
 boolean stop;
+boolean gameOver;
 int score;
 int index = 1;
 int oldTime = 0;
 int threshold = 2000;
+int lives;
 PImage background;
 PImage lady;
 
@@ -15,12 +17,14 @@ void setup() {
   background = loadImage("Background.jpeg");
   size(background.width, background.height);
   lady = loadImage ("lady with umbrella.png");
+  lives = 10;
   //Create conditions for when the raindrop class will be activated
   for (int i = 0; i < droplet.length; i++) {
     droplet[i] = new Raindrop();
   }
   catcher = new Catcher();
   start = true;
+  gameOver = false;
 }
 
 void draw() {
@@ -62,6 +66,9 @@ void draw() {
         score++;
         threshold-=10;
       }
+      if (droplet[i].loc.y > height && droplet[i].loc.y < height+droplet[i].d/2) {
+        lives--;
+      }
     }
     //Set the standards for the game
     //Level one is passed when the score is equal to 10
@@ -84,12 +91,25 @@ void draw() {
   }
   //The game is won when the score is equal to 50
   if (stop == true) {
+    background(255,242,126);
     textMode(350);
     textAlign(CENTER);
-    fill(252, 218, 43);
+    fill(255);
     text("You win!", 250, height/2);
   }
+  if (lives == 0) {
+    gameOver = true;
+  }
+  if (gameOver == true) {
+    background(0);
+    textMode(350);
+    textAlign(CENTER);
+    fill(252, 0, 0);
+    text("You Lose!", 250, height/2);
+  }
 }
+
+
 
 //To start game 
 void mousePressed() {
@@ -100,5 +120,8 @@ void mousePressed() {
 
 //To make raindrops fall quicker
 void mouseDragged() {
-  index+=2;
+  for (int i = 0; i < index; i++) {
+    droplet[i].speed(); 
+  }
 }
+
