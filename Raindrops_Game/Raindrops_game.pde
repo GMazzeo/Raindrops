@@ -8,6 +8,7 @@ int index = 1;
 int oldTime = 0;
 int threshold = 2000;
 int lives;
+int level = 1;
 PImage background;
 PImage lady;
 
@@ -47,6 +48,11 @@ void draw() {
     textSize(75);
     fill(0);
     text(score, 50, 50);
+    for (int i = 0; i < index; i++) {
+      if (droplet[i].active == true) {
+        droplet[i].levelCheck(level);
+      }
+    }
     //Display the catcher and have it move 
     catcher.display();
     catcher.update();
@@ -66,8 +72,9 @@ void draw() {
         score++;
         threshold-=10;
       }
-      if (droplet[i].loc.y > height && droplet[i].loc.y < height+droplet[i].d/2) {
+      if (droplet[i].loc.y > height) {
         lives--;
+        droplet[i].caught();
       }
     }
     //Set the standards for the game
@@ -77,26 +84,29 @@ void draw() {
       textSize(40);
       fill(252, 33, 33);
       text("You passed Level 1", 275, height/2);
+      level = 2;
     }
-    //Level two is passed when the score is equal to 25
+    //Level two is passed when the score is equal to 50
     if (score == 50) {
       textMode(CENTER);
       textSize(40);
       fill(33, 78, 252);
       text("You passed Level 2", 275, height/2);
+      level = 3;
     }
     if (score == 100) {
       stop = true;
     }
   }
-  //The game is won when the score is equal to 50
+  //The game is won when the score is equal to 100
   if (stop == true) {
-    background(255,242,126);
+    background(255, 242, 126);
     textMode(350);
     textAlign(CENTER);
     fill(255);
     text("You win!", 250, height/2);
   }
+  //If all ten lives are lost, you lose the game
   if (lives == 0) {
     gameOver = true;
   }
@@ -107,9 +117,8 @@ void draw() {
     fill(252, 0, 0);
     text("You Lose!", 250, height/2);
   }
+  println(lives);
 }
-
-
 
 //To start game 
 void mousePressed() {
@@ -121,7 +130,7 @@ void mousePressed() {
 //To make raindrops fall quicker
 void mouseDragged() {
   for (int i = 0; i < index; i++) {
-    droplet[i].speed(); 
+    droplet[i].speed();
   }
 }
 
