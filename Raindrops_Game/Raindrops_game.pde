@@ -11,7 +11,6 @@ int lives;
 int level = 1;
 PImage background;
 PImage lady;
-
 void setup() {
   //Set the background
   background(0);
@@ -27,7 +26,6 @@ void setup() {
   start = true;
   gameOver = false;
 }
-
 void draw() {
   //Create start Screen
   if (start == true && stop == false) {
@@ -66,16 +64,9 @@ void draw() {
     for (int i = 0; i < index; i++) {
       droplet[i].display();
       droplet[i].fall();
+      catcher.miss(droplet[i]);
+      catcher.catchDrop(droplet[i]);
       //Create conditions so that the score increases each time a raindrop interacts with the bucket
-      if (catcher.catchDrop(droplet[i]) == true) {
-        droplet[i].caught();
-        score++;
-        threshold-=10;
-      }
-      if (droplet[i].loc.y > height) {
-        lives--;
-        droplet[i].caught();
-      }
     }
     //Set the standards for the game
     //Level one is passed when the score is equal to 10
@@ -119,18 +110,15 @@ void draw() {
   }
   println(lives);
 }
-
 //To start game 
 void mousePressed() {
   if (mouseY<height/2+35 && mouseY>height/2-35 && mouseX<width/2+100 && mouseX>width/2-100) {
     start=false;
   }
 }
-
 //To make raindrops fall quicker
 void mouseDragged() {
   for (int i = 0; i < index; i++) {
     droplet[i].speed();
   }
 }
-
